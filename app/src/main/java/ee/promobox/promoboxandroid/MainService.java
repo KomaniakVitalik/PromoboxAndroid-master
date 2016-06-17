@@ -173,7 +173,7 @@ public class MainService extends Service {
                         public void onSuccess(PullResponse result) {
                             checkUpdate(result);
                             checkCommand(result);
-                            appState.setRssURL(result.getRssFeed());
+                            appState.setRssURL("http://feeds.reuters.com/reuters/topNews");
                         }
 
                         @Override

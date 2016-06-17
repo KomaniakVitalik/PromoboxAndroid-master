@@ -12,6 +12,7 @@ import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -164,19 +165,27 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
     /**
      * Call when need to download and show RSS
      */
-    private void showRSS(String url) {
-        if(TextUtils.isEmpty(url)){
-           hideRssView();
-        }
-        Fragment fragment = getRSSFragment();
-        if (fragment != null) {
-            if (fragment instanceof FragmentRSS) {
-                ((FragmentRSS) fragment).downloadAndParseRSS(url);
+    private void showRSS() {
+
+        String url;
+        try {
+            url = mainService.getRssUrl();
+            if (TextUtils.isEmpty(url)) {
+                hideRssView();
             }
-        } else {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.content_rss, FragmentRSS.newInstance(url)).commit();
+            Fragment fragment = getRSSFragment();
+            if (fragment != null) {
+                if (fragment instanceof FragmentRSS) {
+                    ((FragmentRSS) fragment).downloadAndParseRSS(url);
+                }
+            } else {
+                getFragmentManager().beginTransaction()
+                        .add(R.id.content_rss, FragmentRSS.newInstance(url)).commit();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
+
     }
 
     private Fragment getRSSFragment() {
@@ -479,7 +488,7 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
         } catch (Exception ex) {
             LOGGER.error(ex.toString(), ex);
         }
-
+        showRSS();
         if (appStatus != AppStatus.PLAYING) {
             setPlayList(new PlayList());
             if (!(getCurrentFragment() instanceof FragmentMain)) {
@@ -488,7 +497,6 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
             updateFragmentMainStatus();
         } else {
             try {
-                showRSS(mainService.getRssUrl());
                 setPlayList(new PlayList(mainService.getCurrentCampaigns()));
                 startNextFile();
             } catch (Exception ex) {
@@ -504,10 +512,13 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
         if (fragment instanceof FragmentMain) {
 
             FragmentMain mainFragment = (FragmentMain) fragment;
-
+            if (appStatus == AppStatus.DEVICE_NOT_ACTIVE) {
+                hideRssView();
+            } else {
+                findViewById(R.id.content_rss).setVisibility(View.VISIBLE);
+            }
             if (appStatus == AppStatus.DEVICE_NOT_ACTIVE) {
                 mainFragment.updateStatus(AppStatus.DEVICE_NOT_ACTIVE, DEVICE_NOT_ACTIVE);
-                hideRssView();
             } else if (appStatus == AppStatus.NO_ACTIVE_CAMPAIGN) {
                 mainFragment.updateStatus(AppStatus.NO_ACTIVE_CAMPAIGN, NO_ACTIVE_CAMPAIGN);
             } else if (appStatus == AppStatus.DOWNLOADING) {
