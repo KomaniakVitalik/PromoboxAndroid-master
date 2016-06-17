@@ -158,20 +158,22 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
 
         initWatchdogTimer();
 
-        getFragmentManager().beginTransaction()
-                .add(R.id.content_rss, FragmentRSS.newInstance("")).commit();
+        showRSS("");
     }
 
 
     /**
-     * Call when need to download and show new RSS
+     * Call when need to download and show RSS
      */
-    private void showNewRSS() {
+    private void showRSS(String url) {
         Fragment fragment = getRSSFragment();
         if (fragment != null) {
             if (fragment instanceof FragmentRSS) {
-                ((FragmentRSS) fragment).downloadAndParseRSS("");
+                ((FragmentRSS) fragment).downloadAndParseRSS(url);
             }
+        } else {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.content_rss, FragmentRSS.newInstance(url)).commit();
         }
     }
 
