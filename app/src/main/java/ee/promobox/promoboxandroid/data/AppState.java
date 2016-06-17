@@ -30,6 +30,7 @@ public class AppState {
     private boolean firstStart = true;
     private boolean closedNormally = false;
     private boolean working;
+    private String rssURL = "";
 
     private AppStatus status = AppStatus.PLAYING;
 
@@ -43,7 +44,7 @@ public class AppState {
     private DateTime lastUpdateDate = new DateTime();
 
 
-    public AppState(){
+    public AppState() {
 
     }
 
@@ -183,4 +184,14 @@ public class AppState {
     public void setCurrentCampaignId(int currentCampaignId) {
         this.currentCampaignId = currentCampaignId;
     }
+
+    public String getRssURL() {
+        return rssURL;
+    }
+
+    public void setRssURL(String rssURL) {
+        this.rssURL = rssURL;
+    }
+
+
 }

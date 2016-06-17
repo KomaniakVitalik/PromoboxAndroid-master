@@ -58,8 +58,7 @@ public class HttpPullRequest implements Callable<PullResponse> {
                 LOGGER.debug("Response: {}", response);
 
                 if (!response.isEmpty()) {
-                    PullResponse pullResponse = mapper.readValue(response, PullResponse.class);
-                    return pullResponse;
+                    return mapper.readValue(response, PullResponse.class);
                 }
             } else if (conn.getResponseCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 throw new DeviceNotFoundError();

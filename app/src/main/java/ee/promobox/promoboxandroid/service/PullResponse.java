@@ -34,7 +34,8 @@ public class PullResponse {
     private String status;
     @JsonInclude(JsonInclude.Include.NON_ABSENT)
     private Integer nextFile;
-
+    @JsonInclude(JsonInclude.Include.NON_ABSENT)
+    private String rssFeed = "";
 
 
     public PullResponse() {
@@ -176,5 +177,13 @@ public class PullResponse {
 
     public void setNextFile(Integer nextFile) {
         this.nextFile = nextFile;
+    }
+
+    public String getRssFeed() {
+        return rssFeed;
+    }
+
+    public void setRssFeed(String rssFeed) {
+        this.rssFeed = rssFeed;
     }
 }

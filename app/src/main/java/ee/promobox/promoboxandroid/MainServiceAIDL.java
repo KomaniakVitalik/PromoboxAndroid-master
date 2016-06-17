@@ -13,15 +13,15 @@ import ee.promobox.promoboxandroid.util.TimeUtil;
 public class MainServiceAIDL extends AIDLInterface.Stub {
     private MainService mainService;
 
-    public MainServiceAIDL(MainService mainService){
+    public MainServiceAIDL(MainService mainService) {
         this.mainService = mainService;
     }
 
     @Override
     public Campaign getCampaignWithId(int campaignId) throws RemoteException {
-        if (mainService.getAppState().getCampaigns() != null){
-            for (Campaign campaign : mainService.getAppState().getCampaigns()){
-                if (campaign.getCampaignId() == campaignId){
+        if (mainService.getAppState().getCampaigns() != null) {
+            for (Campaign campaign : mainService.getAppState().getCampaigns()) {
+                if (campaign.getCampaignId() == campaignId) {
                     return campaign;
                 }
             }
@@ -29,12 +29,13 @@ public class MainServiceAIDL extends AIDLInterface.Stub {
         return null;
     }
 
+
     @Override
     public boolean isDeviceActive() throws RemoteException {
         return TimeUtil.checkDeviceActive(mainService.getAppState());
     }
 
-    public boolean isKioskMode(){
+    public boolean isKioskMode() {
         return mainService.getAppState().isKioskMode();
     }
 
@@ -100,6 +101,11 @@ public class MainServiceAIDL extends AIDLInterface.Stub {
     @Override
     public AppStatus getAppStatus() throws RemoteException {
         return mainService.getAppState().getStatus();
+    }
+
+    @Override
+    public String getRssUrl() throws RemoteException {
+        return mainService.getAppState().getRssURL();
     }
 
 }

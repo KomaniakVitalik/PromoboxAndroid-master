@@ -46,7 +46,6 @@ public class NetworkService implements INetworkService {
     @Override
     public ListenableFuture<PullResponse> pullRequest(final PullRequest pullRequest) {
         return getExecutorService().submit(new HttpPullRequest(appState, pullRequest));
-
     }
 
 

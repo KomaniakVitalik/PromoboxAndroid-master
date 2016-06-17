@@ -15,4 +15,5 @@ public interface INetworkService {
     ListenableFuture<List<File>> downloadCampaigns(final List<Campaign> campaigns);
 
     ListenableFuture<File> downloadFile(Campaign campaign, CampaignFile campaignFile);
+
 }

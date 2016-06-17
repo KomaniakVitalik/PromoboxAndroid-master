@@ -12,6 +12,7 @@ import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -157,8 +158,6 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
         getFragmentManager().beginTransaction().add(R.id.main_view, new FragmentMain()).commit();
 
         initWatchdogTimer();
-
-        showRSS("");
     }
 
 
@@ -166,6 +165,9 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
      * Call when need to download and show RSS
      */
     private void showRSS(String url) {
+        if(TextUtils.isEmpty(url)){
+           hideRssView();
+        }
         Fragment fragment = getRSSFragment();
         if (fragment != null) {
             if (fragment instanceof FragmentRSS) {
@@ -179,6 +181,10 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
 
     private Fragment getRSSFragment() {
         return getFragmentManager().findFragmentById(R.id.content_rss);
+    }
+
+    public void hideRssView() {
+        findViewById(R.id.content_rss).setVisibility(View.GONE);
     }
 
     private void initWatchdogTimer() {
@@ -355,7 +361,6 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
             }
         }
 
-
         return orintation;
 
     }
@@ -483,6 +488,7 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
             updateFragmentMainStatus();
         } else {
             try {
+                showRSS(mainService.getRssUrl());
                 setPlayList(new PlayList(mainService.getCurrentCampaigns()));
                 startNextFile();
             } catch (Exception ex) {
@@ -501,6 +507,7 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
 
             if (appStatus == AppStatus.DEVICE_NOT_ACTIVE) {
                 mainFragment.updateStatus(AppStatus.DEVICE_NOT_ACTIVE, DEVICE_NOT_ACTIVE);
+                hideRssView();
             } else if (appStatus == AppStatus.NO_ACTIVE_CAMPAIGN) {
                 mainFragment.updateStatus(AppStatus.NO_ACTIVE_CAMPAIGN, NO_ACTIVE_CAMPAIGN);
             } else if (appStatus == AppStatus.DOWNLOADING) {

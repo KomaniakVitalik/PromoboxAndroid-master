@@ -17,6 +17,7 @@ import com.pkmmte.pkrss.PkRSS;
 
 import java.util.List;
 
+import ee.promobox.promoboxandroid.MainActivity;
 import ee.promobox.promoboxandroid.R;
 import ee.promobox.promoboxandroid.widgets.MarqueeTextView;
 
@@ -26,8 +27,8 @@ public class FragmentRSS extends Fragment {
     public static final String TAG = "FragmentRSS";
 
     private static final String ARG_URL = "rss_url";
-    public static String RSS_URL = "http://feeds.reuters.com/reuters/topNews";
-//    public static String RSS_URL = "";
+    //    public static String RSS_URL = "http://feeds.reuters.com/reuters/topNews";
+    public static String RSS_URL = "";
 
     private StringBuilder stringBuilder;
     private TextView tvRSSfeed;

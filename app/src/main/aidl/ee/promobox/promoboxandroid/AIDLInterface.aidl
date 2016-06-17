@@ -21,5 +21,5 @@ interface AIDLInterface {
      void setSettings(in Settings settings);
      void updateWatchdog();
      AppStatus getAppStatus();
-
+     String getRssUrl();
 }

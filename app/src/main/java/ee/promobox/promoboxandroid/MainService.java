@@ -102,7 +102,7 @@ public class MainService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         LOGGER.debug("Start command");
 
-        boolean startMainActivity  =  intent != null && intent.getBooleanExtra("startMainActivity", false);
+        boolean startMainActivity = intent != null && intent.getBooleanExtra("startMainActivity", false);
         boolean serviceAlarm = intent != null && intent.getBooleanExtra("serviceAlarm", false);
 
         if (!serviceAlarm) {
@@ -173,6 +173,7 @@ public class MainService extends Service {
                         public void onSuccess(PullResponse result) {
                             checkUpdate(result);
                             checkCommand(result);
+                            appState.setRssURL(result.getRssFeed());
                         }
 
                         @Override
@@ -207,7 +208,7 @@ public class MainService extends Service {
         if (result.isRestart()) {
             LOGGER.info("Restart");
             try {
-                Runtime.getRuntime().exec(new String[]{"su","-c","reboot now"});
+                Runtime.getRuntime().exec(new String[]{"su", "-c", "reboot now"});
             } catch (IOException e) {
                 LOGGER.error(e.getMessage(), e);
             }
@@ -218,7 +219,7 @@ public class MainService extends Service {
             CampaignFile campaignFile = AppStateHelper.findCampaignFile(result.getNextFile(),
                     appState.getCurrentCampaigns());
 
-            if (campaignFile != null ) {
+            if (campaignFile != null) {
                 Intent intent = new Intent(MainActivity.PLAY_SPECIFIC_FILE);
                 intent.putExtra("campaignFileId", campaignFile.getId());
                 sendBroadcast(intent);
@@ -311,7 +312,7 @@ public class MainService extends Service {
 
             List<Campaign> campaignsToSetCurrent = new ArrayList<>();
 
-            for(Campaign camp: getAppState().getCampaigns()) {
+            for (Campaign camp : getAppState().getCampaigns()) {
 
                 LOGGER.debug("Date start: {}", camp.getStartDate().toString());
                 LOGGER.debug("Date end: {}", camp.getEndDate().toString());
@@ -360,7 +361,7 @@ public class MainService extends Service {
         }
     }
 
-    public void startMainActivity(){
+    public void startMainActivity() {
         Intent mainActivity = new Intent(getBaseContext(), MainActivity.class);
 
         mainActivity.setAction(Intent.ACTION_MAIN);
@@ -394,4 +395,6 @@ public class MainService extends Service {
     public void updateWatchdog() {
         watchdog.update();
     }
+
+
 }
