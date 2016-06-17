@@ -49,9 +49,7 @@ public class FragmentRSS extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frg_rss_feed, container, false);
-        if (!TextUtils.isEmpty(getArguments().getString(ARG_URL))) {
-            RSS_URL = getArguments().getString(ARG_URL);
-        }
+        getBundleArgs();
         getView(view);
         return view;
     }
@@ -66,6 +64,17 @@ public class FragmentRSS extends Fragment {
         tvRSSfeed = (MarqueeTextView) view.findViewById(R.id.tv_rss_feed);
         rssFeedContainer = getActivity().findViewById(R.id.content_rss);
         downloadAndParseRSS(RSS_URL);
+    }
+
+    /**
+     * Gets args from Bundle
+     */
+    private void getBundleArgs() {
+        if (getArguments() != null) {
+            if (!TextUtils.isEmpty(getArguments().getString(ARG_URL))) {
+                RSS_URL = getArguments().getString(ARG_URL);
+            }
+        }
     }
 
     /**

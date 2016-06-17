@@ -181,7 +181,6 @@ public class MainActivity extends Activity implements FragmentPlaybackListener, 
         return getFragmentManager().findFragmentById(R.id.content_rss);
     }
 
-
     private void initWatchdogTimer() {
         TimerTask serviceTimer = new TimerTask() {
             @Override
